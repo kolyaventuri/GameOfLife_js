@@ -96,4 +96,43 @@ var Game = function () {
 
 module.exports = Game;
 
-},{"./cell":1}]},{},[2]);
+},{"./cell":1}],3:[function(require,module,exports){
+'use strict';
+
+var Game = require('./game');
+
+var canvas = document.querySelector("#game");
+var ctx = canvas.getContext('2d');
+
+var pixelSize = 10;
+
+ctx.strokeStyle = "#AAAAAA";
+ctx.lineWidth = 1;
+
+var width = canvas.width;
+var height = canvas.height;
+
+var pixelWidth = width / pixelSize;
+var pixelHeight = height / pixelSize;
+
+var drawGrid = function drawGrid() {
+  for (var y = 0; y < pixelHeight; y++) {
+    var y_coord = y * pixelSize;
+    ctx.beginPath();
+    ctx.moveTo(0, y_coord);
+    ctx.lineTo(width, y_coord);
+    ctx.stroke();
+  }
+
+  for (var x = 0; x < pixelWidth; x++) {
+    var x_coord = x * pixelSize;
+    ctx.beginPath();
+    ctx.moveTo(x_coord, 0);
+    ctx.lineTo(x_coord, height);
+    ctx.stroke();
+  }
+};
+
+drawGrid();
+
+},{"./game":2}]},{},[3]);

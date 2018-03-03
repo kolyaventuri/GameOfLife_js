@@ -8,7 +8,7 @@ module.exports = function (grunt) {
                ]
             },
             files: {
-               "./dist/app.js": ["./lib/game.js"]
+               "./dist/app.js": ["./lib/runner.js"]
             }
          }
       }
