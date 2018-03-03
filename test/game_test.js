@@ -2,6 +2,7 @@ const expect = require('chai').expect;
 const pry = require('pryjs');
 
 const Game = require('../lib/game');
+const Cell = require('../lib/cell');
 
 describe("Game", () => {
 
@@ -27,7 +28,7 @@ describe("Game", () => {
     it('should populate cells', () => {
       for(let row of game.grid) {
         for(let cell of row) {
-          expect(cell).to.be.a('cell');
+          expect(cell).to.be.an.instanceOf(Cell);
           expect([true, false]).to.include(cell.alive);
         }
       }
