@@ -115,7 +115,7 @@ var height = canvas.height;
 var pixelWidth = width / pixelSize;
 var pixelHeight = height / pixelSize;
 
-var drawGrid = function drawGrid() {
+var drawLines = function drawLines() {
   for (var y = 0; y < pixelHeight; y++) {
     var y_coord = y * pixelSize;
     ctx.beginPath();
@@ -142,8 +142,21 @@ var drawPixel = function drawPixel(x, y, color) {
   ctx.fillRect(x, y, pixelSize, pixelSize);
 };
 
-drawGrid();
+var drawGrid = function drawGrid(grid) {
+  ctx.clearRect(0, 0, width, height);
+  drawLines();
 
-drawPixel(5, 5, "#FF0000");
+  for (var y = 0; y < grid.length; y++) {
+    var row = grid[y];
+    for (var x = 0; x < row.length; x++) {
+      var cell = row[x];
+      drawPixel(x * pixelSize, y * pixelSize, cell.alive ? "#00FF00" : "#FFFFFF");
+    }
+  }
+};
+
+var game = new Game(pixelWidth, pixelHeight);
+console.log(game.grid);
+drawGrid(game.grid);
 
 },{"./game":2}]},{},[3]);
