@@ -1,4 +1,4 @@
-const assert = require('assert');
+const expect = require('chai').expect;
 const pry = require('pryjs');
 
 const Game = require('../lib/game');
@@ -9,25 +9,25 @@ describe("Game", () => {
     let game = new Game(5,5);
 
     it('should be an array of arrays', () => {
-      assert(game.grid instanceof Array);
+      expect(game.grid).to.be.an('array');
 
       for (let row of game.grid) {
-        assert(row instanceof Array);
+        expect(row).to.be.an('array');
       }
     });
 
     it('should be a 5x5 grid', () => {
-      assert(game.grid.length == 5);
+      expect(game.grid).to.have.lengthOf(5);
 
       for(let row of game.grid) {
-        assert(row.length == 5);
+        expect(row).to.have.lengthOf(5);
       }
     });
 
     it('should populate cells', () => {
       for(let row of game.grid) {
         for(let cell of row) {
-          assert(cell === 1 || cell === 0);
+          expect([0, 1]).to.include(cell);
         }
       }
     });
@@ -44,18 +44,18 @@ describe("Game", () => {
     let game = new Game(grid);
 
     it('should calculate number of living neighbors', () => {
-      assert.equal(game.neighbors(0,0), 2);
-      assert.equal(game.neighbors(2,1), 4);
+      expect(game.neighbors(0,0)).to.equal(2);
+      expect(game.neighbors(2,1)).to.equal(4);
     });
 
     it('calculate whether it should live or die', () => {
-      assert(game.willLive(1,2));
-      assert.equal(game.willLive(2,1), false)
+      expect(game.willLive(1,2)).to.be.true;
+      expect(game.willLive(2,1)).to.be.false;
     });
 
     it('calculates whether it should reproduce', () => {
-      assert(game.willReproduce(3,1));
-      assert.equal(game.willReproduce(0,3), false)
+      expect(game.willReproduce(3,1)).to.be.true;
+      expect(game.willReproduce(0,3)).to.be.false;
     });
   });
 });
