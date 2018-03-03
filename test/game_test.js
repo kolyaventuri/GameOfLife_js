@@ -27,7 +27,8 @@ describe("Game", () => {
     it('should populate cells', () => {
       for(let row of game.grid) {
         for(let cell of row) {
-          expect([0, 1]).to.include(cell);
+          expect(cell).to.be.a('cell');
+          expect([true, false]).to.include(cell.alive);
         }
       }
     });
