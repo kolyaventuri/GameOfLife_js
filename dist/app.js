@@ -133,6 +133,17 @@ var drawGrid = function drawGrid() {
   }
 };
 
+var drawPixel = function drawPixel(x, y, color) {
+  x *= pixelSize;
+  y *= pixelSize;
+
+  ctx.fillStyle = color;
+
+  ctx.fillRect(x, y, pixelSize, pixelSize);
+};
+
 drawGrid();
+
+drawPixel(5, 5, "#FF0000");
 
 },{"./game":2}]},{},[3]);
