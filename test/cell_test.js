@@ -18,13 +18,13 @@ describe('Cell', () => {
 
   it('should be able to die', () => {
     let cell = new Cell(true);
-    expect(cell.die).to.be.undefined;
+    expect(cell.die()).to.be.undefined;
     expect(cell.alive).to.be.false;
   });
 
   it('should be able to become alive', () => {
     let cell = new Cell();
-    expect(cell.live).to.be.undefined;
+    expect(cell.live()).to.be.undefined;
     expect(cell.alive).to.be.true;
   })
 });
