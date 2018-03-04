@@ -68,8 +68,8 @@ var Game = function () {
       for (var y = cellY - 1; y <= cellY + 1; y++) {
         if (typeof this.grid[y] == 'undefined') continue;
         for (var x = cellX - 1; x <= cellX + 1; x++) {
-          if (y == cellY && x == cellX) continue;
-          if (this.grid[y][x] === 1) {
+          if (y == cellY && x == cellX || typeof this.grid[y][x] == 'undefined') continue;
+          if (this.grid[y][x].alive) {
             numNeighbors++;
           }
         }
@@ -89,6 +89,19 @@ var Game = function () {
       var neighbors = this.neighbors(cellX, cellY);
       return neighbors == 3;
     }
+  }, {
+    key: 'nextGeneration',
+    value: function nextGeneration() {
+      var _this = this;
+
+      this.grid = this.grid.map(function (row, y) {
+        return row.map(function (cell, x) {
+          if (!_this.willLive(x, y)) return new Cell(false);
+          if (_this.willReproduce(x, y)) return new Cell(true);
+          return cell;
+        });
+      });
+    }
   }]);
 
   return Game;
@@ -100,6 +113,8 @@ module.exports = Game;
 'use strict';
 
 var Game = require('./game');
+
+var delay = 100;
 
 var canvas = document.querySelector("#game");
 var ctx = canvas.getContext('2d');
@@ -156,7 +171,13 @@ var drawGrid = function drawGrid(grid) {
 };
 
 var game = new Game(pixelWidth, pixelHeight);
-console.log(game.grid);
-drawGrid(game.grid);
+
+var draw = function draw() {
+  drawGrid(game.grid);
+  game.nextGeneration();
+  setTimeout(draw, delay);g;
+};
+
+draw();
 
 },{"./game":2}]},{},[3]);
