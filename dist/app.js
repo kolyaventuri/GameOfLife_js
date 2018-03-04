@@ -159,13 +159,4 @@ var game = new Game(pixelWidth, pixelHeight);
 console.log(game.grid);
 drawGrid(game.grid);
 
-var flat = game.grid.reduce(function (acc, cur) {
-  return acc.concat(cur);
-}, []);
-
-var live = flat.filter(function (cell) {
-  return cell.alive;
-});
-console.log(live);
-
 },{"./game":2}]},{},[3]);
