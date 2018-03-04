@@ -133,11 +133,11 @@ var drawLines = function drawLines() {
   }
 };
 
-var drawPixel = function drawPixel(x, y, color) {
+var drawPixel = function drawPixel(x, y, alive) {
   x *= pixelSize;
   y *= pixelSize;
 
-  ctx.fillStyle = color;
+  ctx.fillStyle = alive ? "#00FF00" : "#FFFFFF";
 
   ctx.fillRect(x, y, pixelSize, pixelSize);
 };
@@ -150,7 +150,7 @@ var drawGrid = function drawGrid(grid) {
     var row = grid[y];
     for (var x = 0; x < row.length; x++) {
       var cell = row[x];
-      drawPixel(x * pixelSize, y * pixelSize, cell.alive ? "#00FF00" : "#FFFFFF");
+      drawPixel(x, y, cell.alive);
     }
   }
 };
@@ -158,5 +158,14 @@ var drawGrid = function drawGrid(grid) {
 var game = new Game(pixelWidth, pixelHeight);
 console.log(game.grid);
 drawGrid(game.grid);
+
+var flat = game.grid.reduce(function (acc, cur) {
+  return acc.concat(cur);
+}, []);
+
+var live = flat.filter(function (cell) {
+  return cell.alive;
+});
+console.log(live);
 
 },{"./game":2}]},{},[3]);
