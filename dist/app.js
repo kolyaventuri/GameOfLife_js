@@ -179,15 +179,34 @@ var drawGen = function drawGen(generation) {
 var game = new Game(pixelWidth, pixelHeight);
 
 var generation = 0;
+var running = false;
 
-var draw = function draw() {
+var step = function step() {
   generation += 1;
   drawGrid(game.grid);
   drawGen(generation);
   game.nextGeneration();
-  setTimeout(draw, delay);
 };
 
-draw();
+var draw = function draw() {
+  step();
+  if (running) setTimeout(draw, delay);
+};
+
+var run = document.querySelector("#run");
+run.addEventListener('click', function () {
+  if (running) {
+    running = false;
+    run.innerText = "Run";
+  } else {
+    running = true;
+    run.innerText = "Pause";
+    draw();
+  }
+});
+
+document.querySelector("#step").addEventListener('click', step);
+
+step();
 
 },{"./game":2}]},{},[3]);
