@@ -4,6 +4,14 @@ const pry = require('pryjs');
 const Game = require('../lib/game');
 const Cell = require('../lib/cell');
 
+let toCellArray = (grid) => {
+  return grid.map(row => {
+    return row.map(cell => {
+      return new Cell(!!cell);
+    });
+  });
+};
+
 describe("Game", () => {
 
   describe('Grid', () => {
@@ -33,31 +41,93 @@ describe("Game", () => {
         }
       }
     });
-  });
 
-  describe('Cells', () => {
-    let grid = [
-      [1,1,1,1],
-      [1,0,1,0],
-      [0,1,0,0],
-      [0,0,0,1]
-    ];
+    it('should be able to get neighbors count', () => {
+      let grid = toCellArray([
+        [1, 0, 0, 1],
+        [0, 1, 1, 0],
+        [1, 1, 0, 0],
+        [1, 0, 1, 0]
+      ]);
 
-    let game = new Game(grid);
+      game.grid = grid;
+      expect(game.grid).to.equal(grid);
 
-    it('should calculate number of living neighbors', () => {
-      expect(game.neighbors(0,0)).to.equal(2);
-      expect(game.neighbors(2,1)).to.equal(4);
+      expect(game.neighbors(0,0)).to.equal(1);
+      expect(game.neighbors(1,2)).to.equal(5);
+      expect(game.neighbors(2,2)).to.equal(4);
     });
 
-    it('calculate whether it should live or die', () => {
-      expect(game.willLive(1,2)).to.be.true;
-      expect(game.willLive(2,1)).to.be.false;
+    it('should check if cell will live or die', () => {
+      let grid = toCellArray([
+        [1, 0, 0, 1],
+        [0, 1, 1, 0],
+        [1, 1, 0, 0],
+        [1, 0, 1, 0]
+      ]);
+
+      game.grid = grid;
+      expect(game.grid).to.equal(grid);
+
+      expect(game.willLive(0,0)).to.be.false;
+      expect(game.willLive(2,1)).to.be.true;
     });
 
-    it('calculates whether it should reproduce', () => {
-      expect(game.willReproduce(3,1)).to.be.true;
-      expect(game.willReproduce(0,3)).to.be.false;
+    it('should check if cell will reproduce', () => {
+      let grid = toCellArray([
+        [1, 0, 0, 1],
+        [0, 1, 1, 0],
+        [1, 1, 0, 0],
+        [1, 0, 1, 0]
+      ]);
+
+      game.grid = grid;
+      expect(game.grid).to.equal(grid);
+
+      expect(game.willReproduce(1,0)).to.be.true;
+      expect(game.willReproduce(1,3)).to.be.false;
+    });
+
+    it('should manipulate grid every generation', () => {
+      let grid = toCellArray([
+        [1, 0, 0, 1],
+        [0, 1, 1, 0],
+        [1, 1, 0, 0],
+        [1, 0, 1, 0]
+      ]);
+
+      game.grid = grid;
+      expect(game.grid).to.equal(grid);
+
+      game.nextGeneration();
+
+      let expected = [
+        [0, 1, 1, 0],
+        [0, 0, 1, 0],
+        [1, 0, 0, 0],
+        [1, 0, 0, 0]
+      ];
+
+      game.grid.map((row, y) => {
+        row.map((cell, x) => {
+          expect(cell.alive ? 1 : 0).to.equal(expected[y][x]);
+        });
+      });
+
+      game.nextGeneration();
+
+      expected = [
+        [0, 1, 1, 0],
+        [0, 0, 1, 0],
+        [0, 1, 0, 0],
+        [0, 0, 0, 0]
+      ];
+
+      game.grid.map((row, y) => {
+        row.map((cell, x) => {
+          expect(cell.alive ? 1 : 0).to.equal(expected[y][x]);
+        });
+      });
     });
   });
 });

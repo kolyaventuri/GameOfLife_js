@@ -68,8 +68,8 @@ var Game = function () {
       for (var y = cellY - 1; y <= cellY + 1; y++) {
         if (typeof this.grid[y] == 'undefined') continue;
         for (var x = cellX - 1; x <= cellX + 1; x++) {
-          if (y == cellY && x == cellX) continue;
-          if (this.grid[y][x] === 1) {
+          if (y == cellY && x == cellX || typeof this.grid[y][x] == 'undefined') continue;
+          if (this.grid[y][x].alive) {
             numNeighbors++;
           }
         }
@@ -89,6 +89,19 @@ var Game = function () {
       var neighbors = this.neighbors(cellX, cellY);
       return neighbors == 3;
     }
+  }, {
+    key: 'nextGeneration',
+    value: function nextGeneration() {
+      var _this = this;
+
+      this.grid = this.grid.map(function (row, y) {
+        return row.map(function (cell, x) {
+          if (!_this.willLive(x, y)) return new Cell(false);
+          if (_this.willReproduce(x, y)) return new Cell(true);
+          return cell;
+        });
+      });
+    }
   }]);
 
   return Game;
@@ -96,4 +109,75 @@ var Game = function () {
 
 module.exports = Game;
 
-},{"./cell":1}]},{},[2]);
+},{"./cell":1}],3:[function(require,module,exports){
+'use strict';
+
+var Game = require('./game');
+
+var delay = 100;
+
+var canvas = document.querySelector("#game");
+var ctx = canvas.getContext('2d');
+
+var pixelSize = 10;
+
+ctx.strokeStyle = "#AAAAAA";
+ctx.lineWidth = 1;
+
+var width = canvas.width;
+var height = canvas.height;
+
+var pixelWidth = width / pixelSize;
+var pixelHeight = height / pixelSize;
+
+var drawLines = function drawLines() {
+  for (var y = 0; y < pixelHeight; y++) {
+    var y_coord = y * pixelSize;
+    ctx.beginPath();
+    ctx.moveTo(0, y_coord);
+    ctx.lineTo(width, y_coord);
+    ctx.stroke();
+  }
+
+  for (var x = 0; x < pixelWidth; x++) {
+    var x_coord = x * pixelSize;
+    ctx.beginPath();
+    ctx.moveTo(x_coord, 0);
+    ctx.lineTo(x_coord, height);
+    ctx.stroke();
+  }
+};
+
+var drawPixel = function drawPixel(x, y, alive) {
+  x *= pixelSize;
+  y *= pixelSize;
+
+  ctx.fillStyle = alive ? "#00FF00" : "#FFFFFF";
+
+  ctx.fillRect(x, y, pixelSize, pixelSize);
+};
+
+var drawGrid = function drawGrid(grid) {
+  ctx.clearRect(0, 0, width, height);
+  drawLines();
+
+  for (var y = 0; y < grid.length; y++) {
+    var row = grid[y];
+    for (var x = 0; x < row.length; x++) {
+      var cell = row[x];
+      drawPixel(x, y, cell.alive);
+    }
+  }
+};
+
+var game = new Game(pixelWidth, pixelHeight);
+
+var draw = function draw() {
+  drawGrid(game.grid);
+  game.nextGeneration();
+  setTimeout(draw, delay);
+};
+
+draw();
+
+},{"./game":2}]},{},[3]);
