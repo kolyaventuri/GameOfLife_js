@@ -88,38 +88,38 @@ describe("Game", () => {
       expect(game.willReproduce(1,3)).to.be.false;
     });
 
-    // it('should manipulate grid every generation', () => {
-    //   let grid = toCellArray([
-    //     [1, 0, 0, 1],
-    //     [0, 1, 1, 0],
-    //     [1, 1, 0, 0],
-    //     [1, 0, 1, 0]
-    //   ]);
-    //
-    //   game.grid = grid;
-    //   expect(game.grid).to.equal(grid);
-    //
-    //   game.nextGeneration();
-    //
-    //   let expected = toCellArray([
-    //     [0, 1, 1, 0],
-    //     [0, 0, 1, 0],
-    //     [1, 0, 0, 0],
-    //     [1, 0, 0, 0]
-    //   ]);
-    //
-    //   expect(game.grid).to.equal(expected);
-    //
-    //   game.nextGeneration();
-    //
-    //   expected = toCellArray([
-    //     [0, 1, 1, 0],
-    //     [0, 0, 1, 0],
-    //     [0, 1, 0, 0],
-    //     [0, 0, 0, 0]
-    //   ]);
-    //
-    //   expect(game.grid).to.equal(expected);
-    // });
+    it('should manipulate grid every generation', () => {
+      let grid = toCellArray([
+        [1, 0, 0, 1],
+        [0, 1, 1, 0],
+        [1, 1, 0, 0],
+        [1, 0, 1, 0]
+      ]);
+
+      game.grid = grid;
+      expect(game.grid).to.equal(grid);
+
+      game.nextGeneration();
+
+      let expected = toCellArray([
+        [0, 1, 1, 0],
+        [0, 0, 1, 0],
+        [1, 0, 0, 0],
+        [1, 0, 0, 0]
+      ]);
+
+      expect(game.grid).to.equal(expected);
+
+      game.nextGeneration();
+
+      expected = toCellArray([
+        [0, 1, 1, 0],
+        [0, 0, 1, 0],
+        [0, 1, 0, 0],
+        [0, 0, 0, 0]
+      ]);
+
+      expect(game.grid).to.equal(expected);
+    });
   });
 });
