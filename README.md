@@ -2,7 +2,7 @@
 
 JavaScript implementation of Conways Game of Life.
 
-Built for browser using [Browserify](http://browserify.org/) and (Babel)[http://babeljs.io/].
+Built for browser using [Browserify](http://browserify.org/) and [Babel](http://babeljs.io/).
 
 ## Setup
 If modifying source, install dependencies with `npm i`
