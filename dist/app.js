@@ -122,6 +122,7 @@ var ctx = canvas.getContext('2d');
 var pixelSize = 10;
 
 ctx.strokeStyle = "#AAAAAA";
+ctx.font = "15px Arial";
 ctx.lineWidth = 1;
 
 var width = canvas.width;
@@ -170,10 +171,19 @@ var drawGrid = function drawGrid(grid) {
   }
 };
 
+var drawGen = function drawGen(generation) {
+  ctx.fillStyle = "#000000";
+  ctx.fillText('Generation ' + generation, 10, height - 10);
+};
+
 var game = new Game(pixelWidth, pixelHeight);
 
+var generation = 0;
+
 var draw = function draw() {
+  generation += 1;
   drawGrid(game.grid);
+  drawGen(generation);
   game.nextGeneration();
   setTimeout(draw, delay);
 };
