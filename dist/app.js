@@ -175,7 +175,7 @@ var game = new Game(pixelWidth, pixelHeight);
 var draw = function draw() {
   drawGrid(game.grid);
   game.nextGeneration();
-  setTimeout(draw, delay);g;
+  setTimeout(draw, delay);
 };
 
 draw();
