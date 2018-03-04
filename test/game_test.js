@@ -4,6 +4,14 @@ const pry = require('pryjs');
 const Game = require('../lib/game');
 const Cell = require('../lib/cell');
 
+let toCellArray = (grid) => {
+  return grid.map(row => {
+    return row.map(cell => {
+      return new Cell(!!cell);
+    });
+  });
+};
+
 describe("Game", () => {
 
   describe('Grid', () => {
@@ -32,6 +40,40 @@ describe("Game", () => {
           expect([true, false]).to.include(cell.alive);
         }
       }
+    });
+
+    it('should manipulate grid every generation', () => {
+      let grid = toCellArray([
+        [1, 0, 0, 1],
+        [0, 1, 1, 0],
+        [1, 1, 0, 0],
+        [1, 0, 1, 0]
+      ]);
+
+      game.grid = grid;
+      expect(game.grid).to.equal(grid);
+
+      game.next_generation();
+
+      let expected = toCellArray([
+        [0, 1, 1, 0],
+        [0, 0, 1, 0],
+        [1, 0, 0, 0],
+        [1, 0, 0, 0]
+      ]);
+
+      expect(game.grid).to.equal(expected);
+
+      game.next_generation();
+
+      expected = toCellArray([
+        [0, 1, 1, 0],
+        [0, 0, 1, 0],
+        [0, 1, 0, 0],
+        [0, 0, 0, 0]
+      ]);
+
+      expect(game.grid).to.equal(expected);
     });
   });
 
