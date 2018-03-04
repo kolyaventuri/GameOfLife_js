@@ -54,8 +54,8 @@ describe("Game", () => {
       expect(game.grid).to.equal(grid);
 
       expect(game.neighbors(0,0)).to.equal(1);
-      expect(game.neighbors(1,1)).to.equal(5);
-      expect(game.neighbors(2,2)).to.equal(3);
+      expect(game.neighbors(1,2)).to.equal(5);
+      expect(game.neighbors(2,2)).to.equal(4);
     });
 
     it('should check if cell will live or die', () => {
