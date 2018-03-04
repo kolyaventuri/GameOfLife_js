@@ -101,25 +101,33 @@ describe("Game", () => {
 
       game.nextGeneration();
 
-      let expected = toCellArray([
+      let expected = [
         [0, 1, 1, 0],
         [0, 0, 1, 0],
         [1, 0, 0, 0],
         [1, 0, 0, 0]
-      ]);
+      ];
 
-      expect(game.grid).to.equal(expected);
+      game.grid.map((row, y) => {
+        row.map((cell, x) => {
+          expect(cell.alive ? 1 : 0).to.equal(expected[y][x]);
+        });
+      });
 
       game.nextGeneration();
 
-      expected = toCellArray([
+      expected = [
         [0, 1, 1, 0],
         [0, 0, 1, 0],
         [0, 1, 0, 0],
         [0, 0, 0, 0]
-      ]);
+      ];
 
-      expect(game.grid).to.equal(expected);
+      game.grid.map((row, y) => {
+        row.map((cell, x) => {
+          expect(cell.alive ? 1 : 0).to.equal(expected[y][x]);
+        });
+      });
     });
   });
 });
