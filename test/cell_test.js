@@ -32,7 +32,7 @@ describe('Cell', () => {
     let cell = new Cell();
     expect(cell.lastState).to.be.null;
     cell.live();
-    expect(cell.lastSate).to.be.false;
+    expect(cell.lastState).to.be.false;
     cell.die();
     exepct(cell.lastState).to.be.true;
   });
