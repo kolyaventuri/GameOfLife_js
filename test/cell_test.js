@@ -52,6 +52,6 @@ describe('Cell', () => {
     expect(cell.timeInThisState).to.equal(0);
     cell.stay();
     expect(cell.timeInThisState).to.equal(1);
-    cell.stay();n
+    cell.stay();
   });
 });
