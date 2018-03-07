@@ -38,4 +38,20 @@ describe('Cell', () => {
     cell.stay();
     expect(cell.lastState).to.be.false;
   });
+
+  it('should store time alive', () => {
+    let cell = new Cell();
+    expect(cell.timeInThisState).to.equal(0);
+    cell.stay();
+    expect(cell.timeInThisState).to.equal(1);
+    cell.stay();
+    expect(cell.timeInThisState).to.equal(2);
+    cell.stay();
+    expect(cell.timeInThisState).to.equal(3);
+    cell.die();
+    expect(cell.timeInThisState).to.equal(0);
+    cell.stay();
+    expect(cell.timeInThisState).to.equal(1);
+    cell.stay();n
+  });
 });
