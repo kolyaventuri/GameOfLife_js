@@ -27,6 +27,11 @@ var Cell = function () {
       this.lastState = this.alive;
       this.alive = true;
     }
+  }, {
+    key: "stay",
+    value: function stay() {
+      this.lastState = this.alive;
+    }
   }]);
 
   return Cell;
@@ -120,6 +125,7 @@ var Game = function () {
             newGrid[y][x].live();
             continue;
           }
+          newGrid[y][x].stay();
         }
       }
 
