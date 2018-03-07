@@ -34,6 +34,6 @@ describe('Cell', () => {
     cell.live();
     expect(cell.lastState).to.be.false;
     cell.die();
-    exepct(cell.lastState).to.be.true;
+    expect(cell.lastState).to.be.true;
   });
 });
