@@ -183,7 +183,11 @@ var drawPixel = function drawPixel(x, y, alive, lastState) {
   y *= pixelSize;
 
   ctx.fillStyle = alive ? "#00FF00" : "#FFFFFF";
-  if (lastState === true && alive === false) ctx.fillStyle = "#FF0000";
+  if (document.querySelector("#drawLast").checked) {
+    if (lastState === true && alive === false) {
+      ctx.fillStyle = "#FF0000";
+    }
+  }
 
   ctx.fillRect(x, y, pixelSize, pixelSize);
 };
