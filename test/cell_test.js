@@ -26,5 +26,16 @@ describe('Cell', () => {
     let cell = new Cell();
     cell.live();
     expect(cell.alive).to.be.true;
-  })
+  });
+
+  it('should store last state', () => {
+    let cell = new Cell();
+    expect(cell.lastState).to.be.null;
+    cell.live();
+    expect(cell.lastState).to.be.false;
+    cell.die();
+    expect(cell.lastState).to.be.true;
+    cell.stay();
+    expect(cell.lastState).to.be.false;
+  });
 });

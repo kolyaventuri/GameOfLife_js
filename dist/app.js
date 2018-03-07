@@ -12,17 +12,25 @@ var Cell = function () {
     _classCallCheck(this, Cell);
 
     this.alive = status;
+    this.lastState = null;
   }
 
   _createClass(Cell, [{
     key: "die",
     value: function die() {
+      this.lastState = this.alive;
       this.alive = false;
     }
   }, {
     key: "live",
     value: function live() {
+      this.lastState = this.alive;
       this.alive = true;
+    }
+  }, {
+    key: "stay",
+    value: function stay() {
+      this.lastState = this.alive;
     }
   }]);
 
@@ -39,6 +47,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Cell = require('./cell');
+
+var deepClone = function deepClone(grid) {
+  var newGrid = new Array(grid.length);
+
+  for (var y = 0; y < grid.length; y++) {
+    newGrid[y] = new Array(grid[y].length);
+    for (var x = 0; x < grid[y].length; x++) {
+      newGrid[y][x] = Object.assign(new Cell(), grid[y][x]);
+    }
+  }
+
+  return newGrid;
+};
 
 var Game = function () {
   function Game(width, height) {
@@ -92,15 +113,23 @@ var Game = function () {
   }, {
     key: 'nextGeneration',
     value: function nextGeneration() {
-      var _this = this;
+      var newGrid = deepClone(this.grid);
 
-      this.grid = this.grid.map(function (row, y) {
-        return row.map(function (cell, x) {
-          if (!_this.willLive(x, y)) return new Cell(false);
-          if (_this.willReproduce(x, y)) return new Cell(true);
-          return cell;
-        });
-      });
+      for (var y = 0; y < newGrid.length; y++) {
+        for (var x = 0; x < newGrid[y].length; x++) {
+          if (!this.willLive(x, y)) {
+            newGrid[y][x].die();
+            continue;
+          }
+          if (this.willReproduce(x, y)) {
+            newGrid[y][x].live();
+            continue;
+          }
+          newGrid[y][x].stay();
+        }
+      }
+
+      this.grid = newGrid;
     }
   }]);
 
@@ -149,11 +178,16 @@ var drawLines = function drawLines() {
   }
 };
 
-var drawPixel = function drawPixel(x, y, alive) {
+var drawPixel = function drawPixel(x, y, alive, lastState) {
   x *= pixelSize;
   y *= pixelSize;
 
   ctx.fillStyle = alive ? "#00FF00" : "#FFFFFF";
+  if (document.querySelector("#drawLast").checked) {
+    if (lastState === true && alive === false) {
+      ctx.fillStyle = "#FF0000";
+    }
+  }
 
   ctx.fillRect(x, y, pixelSize, pixelSize);
 };
@@ -166,7 +200,7 @@ var drawGrid = function drawGrid(grid) {
     var row = grid[y];
     for (var x = 0; x < row.length; x++) {
       var cell = row[x];
-      drawPixel(x, y, cell.alive);
+      drawPixel(x, y, cell.alive, cell.lastState);
     }
   }
 };
