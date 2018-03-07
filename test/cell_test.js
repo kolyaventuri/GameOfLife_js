@@ -48,7 +48,7 @@ describe('Cell', () => {
     expect(cell.timeInThisState).to.equal(2);
     cell.stay();
     expect(cell.timeInThisState).to.equal(3);
-    cell.die();
+    cell.live();
     expect(cell.timeInThisState).to.equal(0);
     cell.stay();
     expect(cell.timeInThisState).to.equal(1);
