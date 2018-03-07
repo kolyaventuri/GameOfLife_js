@@ -12,16 +12,19 @@ var Cell = function () {
     _classCallCheck(this, Cell);
 
     this.alive = status;
+    this.lastState = null;
   }
 
   _createClass(Cell, [{
     key: "die",
     value: function die() {
+      this.lastState = this.alive;
       this.alive = false;
     }
   }, {
     key: "live",
     value: function live() {
+      this.lastState = this.alive;
       this.alive = true;
     }
   }]);
@@ -149,11 +152,12 @@ var drawLines = function drawLines() {
   }
 };
 
-var drawPixel = function drawPixel(x, y, alive) {
+var drawPixel = function drawPixel(x, y, alive, lastState) {
   x *= pixelSize;
   y *= pixelSize;
 
   ctx.fillStyle = alive ? "#00FF00" : "#FFFFFF";
+  if (lastState === false && alive === false) ctx.fillStyle = "#FF0000";
 
   ctx.fillRect(x, y, pixelSize, pixelSize);
 };
@@ -166,7 +170,8 @@ var drawGrid = function drawGrid(grid) {
     var row = grid[y];
     for (var x = 0; x < row.length; x++) {
       var cell = row[x];
-      drawPixel(x, y, cell.alive);
+      console.log(cell);
+      drawPixel(x, y, cell.alive, cell.lastState);
     }
   }
 };
