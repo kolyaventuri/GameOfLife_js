@@ -35,5 +35,7 @@ describe('Cell', () => {
     expect(cell.lastState).to.be.false;
     cell.die();
     expect(cell.lastState).to.be.true;
+    cell.stay();
+    expect(cell.lastState).to.be.false;
   });
 });
