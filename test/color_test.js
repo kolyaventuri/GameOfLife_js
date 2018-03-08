@@ -5,15 +5,25 @@ const Cell = require('../lib/cell');
 
 describe('Color', () => {
   let color = require('../lib/color');
-  color.setTimeToGrey(10);
-  color.setMaxL(75);
 
-  it('should have maxL and timeToGrey', () => {
-    expect(color.timeToGrey).to.equal(10);
-    expect(color.maxL).to.equal(75);
+
+  it('should have default maxL and timeToGrey', () => {
+    expect(color.timeToGrey).to.equal(5);
+    expect(color.maxL).to.equal(100);
   });
 
+  it('should be able to set maxL and timeToGrey', () => {
+    color.setTimeToGrey(10);
+    color.setMaxL(75);
+
+    expect(color.timeToGrey).to.equal(10);
+    expect(color.maxL).to.equal(75);
+  })
+
   it('should calculate HSL values', () => {
+    color.setTimeToGrey(10);
+    color.setMaxL(75);
+
     let _color = color.calculate(0);
     expect(_color).to.equal([120, 100, 50]);
 
