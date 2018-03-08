@@ -36,18 +36,18 @@ describe('Color', () => {
     color.setMaxL(75);
 
     let _color = color.calculate(0);
-    expect(_color).to.equal([120, 100, 50]);
+    expect(_color).to.eql([120, 100, 50]);
 
     _color = color.calculate(5);
-    expect(_color).to.equal([120, 50, 62.5]);
+    expect(_color).to.eql([120, 50, 62.5]);
 
     _color = color.calculate(10);
-    expect(_color).to.equal([120, 0, 75]);
+    expect(_color).to.eql([120, 0, 75]);
 
     _color = color.calculate(11);
-    expect(_color).to.equal([120, 0, 75]);
+    expect(_color).to.eql([120, 0, 75]);
 
     _color = color.calculate(7);
-    expect(_color).to.equal([120, 30, 67.5]);
+    expect(_color).to.eql([120, 30, 67.5]);
   });
 });
