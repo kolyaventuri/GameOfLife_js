@@ -39,19 +39,19 @@ describe('Cell', () => {
     expect(cell.lastState).to.be.false;
   });
 
-  it('should store time alive', () => {
+  it('should increment maturity', () => {
     let cell = new Cell();
-    expect(cell.timeInThisState).to.equal(0);
+    expect(cell.maturity).to.equal(0);
     cell.stay();
-    expect(cell.timeInThisState).to.equal(1);
+    expect(cell.maturity).to.equal(1);
     cell.stay();
-    expect(cell.timeInThisState).to.equal(2);
+    expect(cell.maturity).to.equal(2);
     cell.stay();
-    expect(cell.timeInThisState).to.equal(3);
+    expect(cell.maturity).to.equal(3);
     cell.live();
-    expect(cell.timeInThisState).to.equal(0);
+    expect(cell.maturity).to.equal(0);
     cell.stay();
-    expect(cell.timeInThisState).to.equal(1);
+    expect(cell.maturity).to.equal(1);
     cell.stay();
   });
 });

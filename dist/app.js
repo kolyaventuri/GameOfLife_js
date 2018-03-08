@@ -13,6 +13,7 @@ var Cell = function () {
 
     this.alive = status;
     this.lastState = null;
+    this.timeInThisState = 0;
   }
 
   _createClass(Cell, [{
@@ -20,17 +21,29 @@ var Cell = function () {
     value: function die() {
       this.lastState = this.alive;
       this.alive = false;
+      this.checkTimeAlive();
     }
   }, {
     key: "live",
     value: function live() {
       this.lastState = this.alive;
       this.alive = true;
+      this.checkTimeAlive();
     }
   }, {
     key: "stay",
     value: function stay() {
       this.lastState = this.alive;
+      this.checkTimeAlive();
+    }
+  }, {
+    key: "checkTimeAlive",
+    value: function checkTimeAlive() {
+      if (this.lastState != this.alive) {
+        this.timeInThisState = 0;
+      } else {
+        this.timeInThisState += 1;
+      }
     }
   }]);
 
@@ -40,6 +53,47 @@ var Cell = function () {
 module.exports = Cell;
 
 },{}],2:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Color = function () {
+  function Color(start, end) {
+    _classCallCheck(this, Color);
+
+    this.start = start;
+    this.end = end;
+  }
+
+  _createClass(Color, [{
+    key: "calculateValue",
+    value: function calculateValue(index, percentage) {
+      var start = this.start[index];
+      var end = this.end[index];
+
+      var delta = end - start;
+
+      return start + delta * percentage;
+    }
+  }, {
+    key: "calculate",
+    value: function calculate(percentage) {
+      var hue = this.calculateValue(0, percentage);
+      var saturation = this.calculateValue(1, percentage);
+      var light = this.calculateValue(2, percentage);
+
+      return [hue, saturation, light];
+    }
+  }]);
+
+  return Color;
+}();
+
+module.exports = Color;
+
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -54,7 +108,9 @@ var deepClone = function deepClone(grid) {
   for (var y = 0; y < grid.length; y++) {
     newGrid[y] = new Array(grid[y].length);
     for (var x = 0; x < grid[y].length; x++) {
-      newGrid[y][x] = Object.assign(new Cell(), grid[y][x]);
+      var _prototypes = Object.getPrototypeOf(grid[y][x]);
+      var _newCell = Object.create(_prototypes);
+      newGrid[y][x] = Object.assign(_newCell, grid[y][x]);
     }
   }
 
@@ -138,10 +194,11 @@ var Game = function () {
 
 module.exports = Game;
 
-},{"./cell":1}],3:[function(require,module,exports){
+},{"./cell":1}],4:[function(require,module,exports){
 'use strict';
 
 var Game = require('./game');
+var Color = require('./color');
 
 var delay = 100;
 
@@ -149,6 +206,9 @@ var canvas = document.querySelector("#game");
 var ctx = canvas.getContext('2d');
 
 var pixelSize = 10;
+
+var color = new Color([120, 100, 50], [120, 0, 90]);
+var timeToGrey = 10;
 
 ctx.strokeStyle = "#AAAAAA";
 ctx.font = "15px Arial";
@@ -178,13 +238,25 @@ var drawLines = function drawLines() {
   }
 };
 
-var drawPixel = function drawPixel(x, y, alive, lastState) {
+var boundValue = function boundValue(value, min, max) {
+  if (value < min) return min;
+  if (value > max) return max;
+  return value;
+};
+
+var drawPixel = function drawPixel(x, y, cell) {
   x *= pixelSize;
   y *= pixelSize;
 
-  ctx.fillStyle = alive ? "#00FF00" : "#FFFFFF";
+  var percentage = cell.timeInThisState / timeToGrey;
+  percentage = boundValue(percentage, 0, 1);
+
+  var hsl = color.calculate(percentage);
+  var cellColor = 'hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
+
+  ctx.fillStyle = cell.alive ? cellColor : "#FFFFFF";
   if (document.querySelector("#drawLast").checked) {
-    if (lastState === true && alive === false) {
+    if (cell.lastState === true && cell.alive === false) {
       ctx.fillStyle = "#FF0000";
     }
   }
@@ -200,7 +272,7 @@ var drawGrid = function drawGrid(grid) {
     var row = grid[y];
     for (var x = 0; x < row.length; x++) {
       var cell = row[x];
-      drawPixel(x, y, cell.alive, cell.lastState);
+      drawPixel(x, y, cell);
     }
   }
 };
@@ -243,4 +315,4 @@ document.querySelector("#step").addEventListener('click', step);
 
 step();
 
-},{"./game":2}]},{},[3]);
+},{"./color":2,"./game":3}]},{},[4]);

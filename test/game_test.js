@@ -114,8 +114,8 @@ describe("Game", () => {
         });
       });
 
-      expect(game.grid[1][2].timeInThisState).to.equal(1);
-      expect(game.grid[2][0].timeInThisState).to.equal(1);
+      expect(game.grid[1][2].maturity).to.equal(1);
+      expect(game.grid[2][0].maturity).to.equal(1);
 
       game.nextGeneration();
 
@@ -131,8 +131,8 @@ describe("Game", () => {
           expect(cell.alive ? 1 : 0).to.equal(expected[y][x]);
         });
       });
-      expect(game.grid[1][2].timeInThisState).to.equal(2);
-      expect(game.grid[2][0].timeInThisState).to.equal(0);
+      expect(game.grid[1][2].maturity).to.equal(2);
+      expect(game.grid[2][0].maturity).to.equal(0);
     });
   });
 });
