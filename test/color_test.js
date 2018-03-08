@@ -15,17 +15,20 @@ describe('Color', () => {
     expect(_color.hue).to.equal(50);
   });
 
-  it('should have default maxL and timeToGrey', () => {
+  it('should have default attributes', () => {
     expect(color.timeToGrey).to.equal(5);
     expect(color.maxL).to.equal(100);
+    expect(color.minS).to.equal(0);
   });
 
-  it('should be able to set maxL and timeToGrey', () => {
+  it('should be able to set attributes', () => {
     color.setTimeToGrey(10);
     color.setMaxL(75);
+    color.setMinS(20);
 
     expect(color.timeToGrey).to.equal(10);
     expect(color.maxL).to.equal(75);
+    expect(color.minS).to.equal(20);
   });
 
   it('should calculate HSL values', () => {
