@@ -12,7 +12,7 @@ describe('Color', () => {
 
   it('should be able to start with different hue', () => {
     let _color = new Color(50);
-    expect(color.hue).to.equal(50);
+    expect(_color.hue).to.equal(50);
   });
 
   it('should have default maxL and timeToGrey', () => {
