@@ -32,6 +32,10 @@ describe("Game", () => {
         expect(row).to.have.lengthOf(5);
       }
     });
+  });
+
+  describe('Setup', () => {
+    let game = new Game(5,5);
 
     it('should populate cells', () => {
       for(let row of game.grid) {
@@ -41,6 +45,10 @@ describe("Game", () => {
         }
       }
     });
+  });
+
+  describe('Behavior', () => {
+    let game = new Game(5,5);
 
     it('should be able to get neighbors count', () => {
       let grid = toCellArray([
