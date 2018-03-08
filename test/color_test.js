@@ -6,6 +6,14 @@ const Color = require('../lib/color');
 describe('Color', () => {
   let color = new Color();
 
+  it('should be green by default', () => {
+    expect(color.hue).to.equal(120);
+  });
+
+  it('should be able to start with different hue', () => {
+    let _color = new Color(50);
+    expect(color.hue).to.equal(50);
+  });
 
   it('should have default maxL and timeToGrey', () => {
     expect(color.timeToGrey).to.equal(5);
