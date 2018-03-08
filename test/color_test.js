@@ -26,7 +26,7 @@ describe('Color', () => {
 
     expect(color.timeToGrey).to.equal(10);
     expect(color.maxL).to.equal(75);
-  })
+  });
 
   it('should calculate HSL values', () => {
     color.setTimeToGrey(10);
@@ -39,6 +39,9 @@ describe('Color', () => {
     expect(_color).to.equal([120, 50, 62.5]);
 
     _color = color.calculate(10);
+    expect(_color).to.equal([120, 0, 75]);
+
+    _color = color.calculate(11);
     expect(_color).to.equal([120, 0, 75]);
 
     _color = color.calculate(7);
