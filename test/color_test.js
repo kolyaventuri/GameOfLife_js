@@ -1,10 +1,10 @@
 const expect = require('chai').expect;
 const pry = require('pryjs');
 
-const Cell = require('../lib/cell');
+const Color = require('../lib/color');
 
 describe('Color', () => {
-  let color = require('../lib/color');
+  let color = new Color();
 
 
   it('should have default maxL and timeToGrey', () => {
