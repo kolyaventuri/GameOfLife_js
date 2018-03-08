@@ -38,4 +38,20 @@ describe('Cell', () => {
     cell.stay();
     expect(cell.lastState).to.be.false;
   });
+
+  it('should increment maturity', () => {
+    let cell = new Cell();
+    expect(cell.maturity).to.equal(0);
+    cell.stay();
+    expect(cell.maturity).to.equal(1);
+    cell.stay();
+    expect(cell.maturity).to.equal(2);
+    cell.stay();
+    expect(cell.maturity).to.equal(3);
+    cell.live();
+    expect(cell.maturity).to.equal(0);
+    cell.stay();
+    expect(cell.maturity).to.equal(1);
+    cell.stay();
+  });
 });
