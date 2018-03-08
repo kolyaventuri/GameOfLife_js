@@ -13,7 +13,7 @@ var Cell = function () {
 
     this.alive = status;
     this.lastState = null;
-    this.timeInThisState = 0;
+    this.maturity = 0;
   }
 
   _createClass(Cell, [{
@@ -21,28 +21,28 @@ var Cell = function () {
     value: function die() {
       this.lastState = this.alive;
       this.alive = false;
-      this.checkTimeAlive();
+      this.checkMaturity();
     }
   }, {
     key: "live",
     value: function live() {
       this.lastState = this.alive;
       this.alive = true;
-      this.checkTimeAlive();
+      this.checkMaturity();
     }
   }, {
     key: "stay",
     value: function stay() {
       this.lastState = this.alive;
-      this.checkTimeAlive();
+      this.checkMaturity();
     }
   }, {
-    key: "checkTimeAlive",
-    value: function checkTimeAlive() {
+    key: "checkMaturity",
+    value: function checkMaturity() {
       if (this.lastState != this.alive) {
-        this.timeInThisState = 0;
+        this.maturity = 0;
       } else {
-        this.timeInThisState += 1;
+        this.maturity += 1;
       }
     }
   }]);
@@ -208,7 +208,7 @@ var ctx = canvas.getContext('2d');
 var pixelSize = 10;
 
 var color = new Color([120, 100, 50], [120, 0, 90]);
-var timeToGrey = 10;
+var timeToGrey = 25;
 
 ctx.strokeStyle = "#AAAAAA";
 ctx.font = "15px Arial";
@@ -248,7 +248,7 @@ var drawPixel = function drawPixel(x, y, cell) {
   x *= pixelSize;
   y *= pixelSize;
 
-  var percentage = cell.timeInThisState / timeToGrey;
+  var percentage = cell.maturity / timeToGrey;
   percentage = boundValue(percentage, 0, 1);
 
   var hsl = color.calculate(percentage);
